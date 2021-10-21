@@ -298,6 +298,57 @@ def index():
             else:
                 sheet.cell(row=i+2, column=j+3).fill = PatternFill(patternType='solid', fgColor='fffac2', bgColor= 'fffac2') # 黄色
     
+    # 変更したエクセルファイルを変更
+    wb.save(excelFile)
+
+    #　希望しているところに色付けここまで
+
+    # 人が不足している場合の色付け
+
+    for i in range(days * 2): # 日数分繰り返す
+        eachday_line = new_chouseisan_csv.iloc[i].tolist() # 一行ずつリスト化
+        print(i) #デバッグ用
+        print(eachday_line)
+
+        if chouseisan_csv.iloc[i,1] == weekday: # 平日か休日判断、最初のほうから引っ張ってくる
+            if i % 2 == 0: # 午前か午後の判断は行数が偶数かどうか
+                if (eachday_line.count('○')) < needNumberWeekday[0]: # 平日午前の人数を満たしているかどうか
+                    print("平日午前人数不足 必要人数:", needNumberWeekday[0], "現在の人数:", eachday_line.count('○'))
+                    sheet.cell(row=i+2, column=1).fill = PatternFill(patternType='solid', fgColor='e6e600', bgColor= 'e6e600') # 不足しているなら黄色に色付け
+                else:
+                    print("平日午前不足なし 必要人数:", needNumberWeekday[0], "現在の人数:", eachday_line.count('○'))
+            elif i % 2 != 0:
+                if (eachday_line.count('○')) < needNumberWeekday[1]:
+                    print("平日午後人数不足 必要人数:", needNumberWeekday[1], "現在の人数:", eachday_line.count('○'))
+                    sheet.cell(row=i+2, column=1).fill = PatternFill(patternType='solid', fgColor='e6e600', bgColor= 'e6e600')
+                else:
+                    print("平日午後不足なし 必要人数:", needNumberWeekday[1], "現在の人数:", eachday_line.count('○'))
+            else:
+                print("午前か午後の判断ができません")
+        
+        elif chouseisan_csv.iloc[i,1] == holiday:
+            if i % 2 == 0:
+                if (eachday_line.count('○')) < needNumberHoliday[0]:
+                    print("休日午前人数不足 必要人数:", needNumberHoliday[0], "現在の人数:", eachday_line.count('○'))
+                    sheet.cell(row=i+2, column=1).fill = PatternFill(patternType='solid', fgColor='e6e600', bgColor= 'e6e600')
+                else:
+                    print("休日午前不足なし 必要人数:", needNumberHoliday[0], "現在の人数:", eachday_line.count('○'))
+            elif i % 2 != 0:
+                if (eachday_line.count('○')) < needNumberHoliday[1]:
+                    print("休日午後人数不足 必要人数:", needNumberHoliday[1], "現在の人数:", eachday_line.count('○'))
+                    sheet.cell(row=i+2, column=1).fill = PatternFill(patternType='solid', fgColor='e6e600', bgColor= 'e6e600')
+                else:
+                    print("休日午後不足なし 必要人数:", needNumberHoliday[1], "現在の人数:", eachday_line.count('○'))
+            else:
+                print("午前か午後の判断ができません")
+        else:
+                print("平日か休日の判断ができません")
+    
+    # 変更したエクセルファイルを変更
+    wb.save(excelFile)
+
+    # 人が不足している場合の色付けここまで
+    
     # 表のmemberと日程を見えやすいように色付け
     for i in range(1, days*2+4):
         sheet.cell(row=i, column=1).fill = PatternFill(patternType='solid', fgColor='eaf6fd', bgColor= 'eaf6fd') # 水色
