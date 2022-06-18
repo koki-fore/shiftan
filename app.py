@@ -87,7 +87,7 @@ def index():
     # ここから曜日を1 0 であらわす処理 ↓
 
     # タイトルを取得
-    with open(f.filename) as file:
+    with open(f.filename, encoding="cp932") as file:
         title = file.readlines()[0]
         title = title.replace( '\n' , '' )
         title = title.replace( ',' , '')
