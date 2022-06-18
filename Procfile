@@ -1,0 +1,1 @@
+web: gunicorn shiftan:app --log-file=-
